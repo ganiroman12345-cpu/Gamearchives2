@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useLayoutEffect, useRef } from 'react';
 import { useGameStore } from '../store';
 import { GameState } from '../types';
 
@@ -13,7 +13,9 @@ export const MusicSystem: React.FC = () => {
 
   const playTrack = (trackUrl: string, loop: boolean) => {
     if (audioRef.current) {
-      audioRef.current.pause();
+      try {
+        audioRef.current.pause();
+      } catch (e) {}
       audioRef.current = null;
     }
 
@@ -22,13 +24,56 @@ export const MusicSystem: React.FC = () => {
     audio.volume = 0.55;
     audio.preload = 'auto';
 
+    // Fallback for loading / directory issues
+    audio.onerror = (err) => {
+      console.warn(`Could not load audio track at ${trackUrl}, trying fallback...`, err);
+      let fallbackUrl: string | null = null;
+      if (trackUrl === '/Cybernetic_Circuits.mp3') {
+        fallbackUrl = '/audio/cybernetic.mp3';
+      } else if (trackUrl === '/Unearthly_Powers.mp3') {
+        fallbackUrl = '/audio/power.mp3';
+      } else if (trackUrl === '/audio/cybernetic.mp3') {
+        fallbackUrl = '/Cybernetic_Circuits.mp3';
+      } else if (trackUrl === '/audio/power.mp3') {
+        fallbackUrl = '/Unearthly_Powers.mp3';
+      }
+
+      if (fallbackUrl && fallbackUrl !== trackUrl) {
+        console.log(`Loading fallback track: ${fallbackUrl}`);
+        const fallbackAudio = new Audio(fallbackUrl);
+        fallbackAudio.loop = loop;
+        fallbackAudio.volume = 0.55;
+        fallbackAudio.preload = 'auto';
+
+        if (!loop) {
+          fallbackAudio.onended = audio.onended;
+        }
+
+        audioRef.current = fallbackAudio;
+        currentTrackSrcRef.current = fallbackUrl;
+
+        fallbackAudio.play().then(() => {
+          isPlayingRef.current = true;
+          console.log(`Successfully playing fallback track: ${fallbackUrl}`);
+        }).catch((playErr) => {
+          if (playErr && playErr.name === 'AbortError') {
+            return;
+          }
+          console.error(`Fallback play also failed for ${fallbackUrl}:`, playErr);
+          isPlayingRef.current = false;
+        });
+      }
+    };
+
     if (!loop) {
       audio.onended = () => {
         isPlayingRef.current = false;
         
         // Stop currently playing music & play the "Music Stop" sound effect
         if (stopAudioRef.current) {
-          stopAudioRef.current.pause();
+          try {
+            stopAudioRef.current.pause();
+          } catch (e) {}
           stopAudioRef.current = null;
         }
 
@@ -73,12 +118,18 @@ export const MusicSystem: React.FC = () => {
 
     audio.play().then(() => {
       isPlayingRef.current = true;
-    }).catch(() => {
+      console.log(`Successfully playing track: ${trackUrl}`);
+    }).catch((playErr) => {
+      if (playErr && playErr.name === 'AbortError') {
+        // Silently ignore expected interruption from pause() or navigation change
+        return;
+      }
+      console.warn(`Initial play failed for track ${trackUrl} (likely waiting for user interaction):`, playErr);
       isPlayingRef.current = false;
     });
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (typeof window === 'undefined') return;
 
     const isMultiplayer = gameMode === 'MULTIPLAYER';
@@ -95,12 +146,16 @@ export const MusicSystem: React.FC = () => {
 
     if (!shouldPlay) {
       if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current.currentTime = 0;
+        try {
+          audioRef.current.pause();
+          audioRef.current.currentTime = 0;
+        } catch (e) {}
         audioRef.current = null;
       }
       if (stopAudioRef.current) {
-        stopAudioRef.current.pause();
+        try {
+          stopAudioRef.current.pause();
+        } catch (e) {}
         stopAudioRef.current = null;
       }
       isPlayingRef.current = false;
@@ -139,6 +194,7 @@ export const MusicSystem: React.FC = () => {
       if (active && audioRef.current && (audioRef.current.paused || !isPlayingRef.current)) {
         audioRef.current.play().then(() => {
           isPlayingRef.current = true;
+          console.log(`Played track on user interaction: ${currentTrackSrcRef.current}`);
         }).catch(() => {});
       }
     };
@@ -158,11 +214,15 @@ export const MusicSystem: React.FC = () => {
   useEffect(() => {
     return () => {
       if (audioRef.current) {
-        audioRef.current.pause();
+        try {
+          audioRef.current.pause();
+        } catch (e) {}
         audioRef.current = null;
       }
       if (stopAudioRef.current) {
-        stopAudioRef.current.pause();
+        try {
+          stopAudioRef.current.pause();
+        } catch (e) {}
         stopAudioRef.current = null;
       }
     };
