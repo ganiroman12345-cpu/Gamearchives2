@@ -1063,11 +1063,11 @@ const App: React.FC = () => {
     // --- SAFETY GRAB RECOVERY ---
     // Release BEING_GRABBED if opponent got hit or is no longer holding them
     if (player.action === ActionType.BEING_GRABBED && enemy.action !== ActionType.GRAB_ACTIVE) {
-        const fY_p = (useGameStore.getState().selectedMap === 'FOREST' && (player.position < -7.6 || player.position > 7.6)) ? -0.4 : 0.0;
+        const fY_p = (useGameStore.getState().selectedMap === 'FOREST' && (player.position < -7.6 || player.position > 7.6)) ? -12.0 : 0.0;
         localUpdateFighter('player', { action: ActionType.IDLE, y: fY_p, velocityY: 0 });
     }
     if (enemy.action === ActionType.BEING_GRABBED && player.action !== ActionType.GRAB_ACTIVE) {
-        const fY_e = (useGameStore.getState().selectedMap === 'FOREST' && (enemy.position < -7.6 || enemy.position > 7.6)) ? -0.4 : 0.0;
+        const fY_e = (useGameStore.getState().selectedMap === 'FOREST' && (enemy.position < -7.6 || enemy.position > 7.6)) ? -12.0 : 0.0;
         localUpdateFighter('enemy', { action: ActionType.IDLE, y: fY_e, velocityY: 0 });
     }
 
@@ -1110,13 +1110,13 @@ const App: React.FC = () => {
         // 3. If stuck in a knockdown/thrown state, air spin hit, or laying flat for too long without recovering
         else if ((entity.action === ActionType.KNOCKDOWN || entity.action === ActionType.THROWN || entity.action === ActionType.LAYING_FLAT || entity.action === ActionType.AIR_SPIN_HIT) && duration > 3000) {
             if (entity.hp > 0) {
-                const fY = (useGameStore.getState().selectedMap === 'FOREST' && (entity.position < -7.6 || entity.position > 7.6)) ? -1.2 : 0.0;
+                const fY = (useGameStore.getState().selectedMap === 'FOREST' && (entity.position < -7.6 || entity.position > 7.6)) ? -12.0 : 0.0;
                 localUpdateFighter(who, { action: ActionType.GET_UP, velocityY: 0, velocityX: 0, y: fY, actionStartTime: nowMs });
             }
         }
         // 4. Grab/Throw active locks
         else if ((entity.action === ActionType.GRAB_ACTIVE || entity.action === ActionType.BEING_GRABBED) && duration > 2000) {
-            const fY = (useGameStore.getState().selectedMap === 'FOREST' && (entity.position < -7.6 || entity.position > 7.6)) ? -1.2 : 0.0;
+            const fY = (useGameStore.getState().selectedMap === 'FOREST' && (entity.position < -7.6 || entity.position > 7.6)) ? -12.0 : 0.0;
             localUpdateFighter(who, { action: ActionType.IDLE, y: fY, velocityY: 0 });
         }
     };
@@ -1146,9 +1146,9 @@ const App: React.FC = () => {
         if (isOffPlatform) {
             floorY = -15.0;
         } else if (isForest) {
-            // Remove hexagonal 2D collision in Forest map: if they walk off the 7.6 radius hexagon, they drop to lowered water level (-12.0)
+            // Drop down to the deep rocky gorge floor Y = -13.5
             if (entity.position < -7.6 || entity.position > 7.6) {
-                floorY = -12.0; // lowered water level is Y = -12.0
+                floorY = -13.5;
             } else {
                 floorY = 0.0;
             }
@@ -1175,29 +1175,8 @@ const App: React.FC = () => {
             newVelX *= 0.98;
             if (Math.abs(newVelX) < 0.01) newVelX = 0;
 
-            // Trigger instant death if they fall off the platform into the lowered water (Forest map)
-            const isWaterDeath = isForest && (newPos < -7.6 || newPos > 7.6) && newY <= -11.8 && entity.hp > 0 && entity.action !== ActionType.DEAD;
-            if (isWaterDeath) {
-                localUpdateFighter(who, { hp: 0, action: ActionType.DEAD, y: -12.0, velocityY: 0, velocityX: 0, position: newPos });
-                
-                // Trigger vibrant water splash particle explosion
-                useGameStore.getState().addHitImpact({
-                    x: newPos,
-                    y: -12.0,
-                    color: "#38bdf8",
-                    type: "WATER_SPLASH"
-                });
-
-                otherUpdates.shakeIntensity = 4.0;
-                if (useGameStore.getState().gameState !== GameState.CHARACTER_SELECT) {
-                    playAcidSound(); // Sizzle/splash sound
-                }
-                endGame(who === 'player' ? 'enemy' : 'player');
-                return;
-            }
-
             // Trigger instant death if they fall off the platform into the volcanic lava below or rooftop void or forest mountain ravine
-            if (isOffPlatform && ((!isForest && !isRooftop && newY < -2.2) || (isRooftop && newY < -6.0) || (isForest && newY < -2.2)) && entity.hp > 0 && entity.action !== ActionType.DEAD) {
+            if (isOffPlatform && ((!isForest && !isRooftop && newY < -2.2) || (isRooftop && newY < -6.0) || (isForest && newY < -11.8)) && entity.hp > 0 && entity.action !== ActionType.DEAD) {
                 if (isRooftop || isForest) {
                     // Rooftop or Forest ravine fall: They just fall. Let them keep their downward velocity and fall out of screen (floorY is -15.0)
                     localUpdateFighter(who, { hp: 0, action: ActionType.DEAD, y: newY, velocityY: newVelY, velocityX: newVelX * 0.9, position: newPos });

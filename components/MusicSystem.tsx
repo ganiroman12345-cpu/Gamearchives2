@@ -46,15 +46,12 @@ export const MusicSystem: React.FC = () => {
           );
 
           if (stillMultiplayer) {
-            // Cycle through Neon Highway, Cybernetic Circuits, and Unearthly Powers!
+            // Randomly choose between Unearthly Powers and Cybernetic Circuits!
             const playlist = [
-              '/audio/neon_highway.mp3',
-              '/audio/cybernetic.mp3',
-              '/audio/power.mp3'
+              '/Cybernetic_Circuits.mp3',
+              '/Unearthly_Powers.mp3'
             ];
-            const currentIdx = playlist.findIndex(t => currentTrackSrcRef.current?.includes(t) || currentTrackSrcRef.current === t);
-            const nextIdx = (currentIdx + 1) % playlist.length;
-            const nextTrack = playlist[nextIdx >= 0 ? nextIdx : 0];
+            const nextTrack = playlist[Math.floor(Math.random() * playlist.length)];
 
             currentTrackSrcRef.current = nextTrack;
             playTrack(nextTrack, false);
@@ -112,16 +109,16 @@ export const MusicSystem: React.FC = () => {
     }
 
     if (isMultiplayerScreen) {
-      // If already playing one of the multiplayer tracks (Neon Highway, Cybernetic, Power), keep it playing across screens
+      // If already playing one of the multiplayer tracks (Cybernetic, Power), keep it playing across screens
       if (
         currentTrackSrcRef.current && 
-        (currentTrackSrcRef.current.includes('neon_highway') || currentTrackSrcRef.current.includes('cybernetic') || currentTrackSrcRef.current.includes('power')) &&
+        (currentTrackSrcRef.current.toLowerCase().includes('cybernetic') || currentTrackSrcRef.current.toLowerCase().includes('power')) &&
         lastModeRef.current === 'MULTIPLAYER' &&
         isPlayingRef.current
       ) {
         // Continue current track
       } else {
-        const multiplayerTracks = ['/audio/neon_highway.mp3', '/audio/cybernetic.mp3', '/audio/power.mp3'];
+        const multiplayerTracks = ['/Cybernetic_Circuits.mp3', '/Unearthly_Powers.mp3'];
         const selectedTrack = multiplayerTracks[Math.floor(Math.random() * multiplayerTracks.length)];
         playTrack(selectedTrack, false);
       }

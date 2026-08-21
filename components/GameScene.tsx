@@ -1153,7 +1153,7 @@ const ForestFloor: React.FC = () => {
 
   return (
     <group>
-      {/* 1. Submerged Riverbed Surface (Lowered deep beneath water level at Y = -13.5) */}
+      {/* 1. Deep Rocky Gorge Floor (Lowered beneath the stage at Y = -13.5) */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -13.5, -0.25]} receiveShadow>
         <planeGeometry args={[120.0, 32.0]} />
         <meshStandardMaterial 
@@ -1161,18 +1161,6 @@ const ForestFloor: React.FC = () => {
           color="#15261d"
           roughness={0.92} 
           metalness={0.1} 
-        />
-      </mesh>
-
-      {/* 2. Beautiful Transparent Water Surface Plane placed lower at Y = -12.0 */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -12.0, -0.25]} receiveShadow>
-        <planeGeometry args={[120.0, 32.0]} />
-        <meshStandardMaterial 
-          color="#38bdf8" 
-          transparent 
-          opacity={0.65} 
-          roughness={0.15} 
-          metalness={0.8} 
         />
       </mesh>
     </group>
@@ -2280,38 +2268,20 @@ const ForestSkyBackdrop: React.FC = () => {
   );
 };
 
-// Pure Majestic Mountain Massif directly underneath the fighting zone (clean solid mountain slopes - enlarged "falda")
+// Pure Majestic Mountain Cliff Pillar directly underneath the fighting platform
 const MountainBeneathStage: React.FC = () => {
   return (
     <group position={[0, 0, -0.25]}>
-      {/* 1. Mountain Peak Summit Platform holding the water fighting pool */}
-      <mesh position={[0, -0.4, 0]} receiveShadow castShadow>
-        <boxGeometry args={[28.2, 0.6, 10.7]} />
-        <meshStandardMaterial color="#2d3748" roughness={0.85} />
+      {/* 1. Mountain Peak Stone Pillar supporting the hexagon platform directly down */}
+      <mesh position={[0, -6.5, 0]} receiveShadow castShadow>
+        <cylinderGeometry args={[7.4, 8.8, 13.0, 6]} />
+        <meshStandardMaterial color="#2d3748" roughness={0.9} />
       </mesh>
 
-      {/* 2. Upper Mountain Ridge Tier (Enlarged "falda") */}
-      <mesh position={[0, -1.4, 0]} receiveShadow castShadow>
-        <boxGeometry args={[34.0, 2.8, 14.5]} />
-        <meshStandardMaterial color="#1e293b" roughness={0.88} />
-      </mesh>
-
-      {/* 3. Mid Mountain Slope Body extending outwards (Enlarged "falda") */}
-      <mesh position={[0, -3.8, 0]} receiveShadow castShadow>
-        <boxGeometry args={[44.0, 5.5, 22.5]} />
-        <meshStandardMaterial color="#172554" roughness={0.92} />
-      </mesh>
-
-      {/* 4. Deep Mountain Base descending into the mist (Enlarged "falda") */}
-      <mesh position={[0, -9.5, 0]} receiveShadow castShadow>
-        <boxGeometry args={[58.0, 13.0, 34.0]} />
-        <meshStandardMaterial color="#0f172a" roughness={0.98} />
-      </mesh>
-
-      {/* 5. Mountain Base Ridge Foundation (Enlarged "falda") */}
-      <mesh position={[0, -18.0, 0]}>
-        <boxGeometry args={[80.0, 16.0, 50.0]} />
-        <meshStandardMaterial color="#090d16" roughness={1.0} />
+      {/* 2. Submerged Pillar Foundation resting on riverbed below water level */}
+      <mesh position={[0, -14.0, 0]}>
+        <cylinderGeometry args={[8.8, 12.0, 4.0, 6]} />
+        <meshStandardMaterial color="#1e293b" roughness={0.95} />
       </mesh>
     </group>
   );

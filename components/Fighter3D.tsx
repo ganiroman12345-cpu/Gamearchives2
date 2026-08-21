@@ -2750,33 +2750,32 @@ const BeltEquipmentMesh: React.FC<{ type?: string; color?: string; subColor?: st
   const lightGray = "#d1d5db";
   const darkGray = "#374151";
 
-  const torsoColor = isAlternate ? alternateSkin : (isMechaGold ? mechaGoldColor : (isAlien ? darkGray : (isFox ? subColor : (isFemale ? mainColor : subColor))));
-  const pantsColor = isAlternate ? "#111" : (isMechaGold ? mechaGoldColor : (state.name === 'James' ? "#6b7280" : (isAlien ? darkGray : (isFox ? subColor : (isFemale ? mainColor : mainColor)))));
-  const armColor = isAlternate ? alternateSkin : (isMechaGold ? mechaGoldColor : (isAlien ? darkGray : (isFox ? subColor : mainColor)));
-  const shoulderColor = isAlternate ? alternateSkin : (isMechaGold ? mechaGoldColor : (isAlien ? darkGray : (isFox ? subColor : (isFemale ? mainColor : subColor))));
-  const legColor = isAlternate ? alternateSkin : (isMechaGold ? mechaGoldColor : (state.name === 'James' ? "#6b7280" : (isAlien ? alienPurple : (isFox ? subColor : mainColor))));
-  const feetColor = isAlternate ? "#111" : (isMechaGold ? mechaGoldColor : (state.name === 'James' ? "#6b7280" : (isAlien ? alienPurple : (isFemale ? mainColor : (isFox ? subColor : "#111111")))));
-  const shinColor = isAlternate ? alternateSkin : (isMechaGold ? mechaGoldColor : (state.name === 'James' ? "#6b7280" : (isAlien ? alienPurple : (isFox ? subColor : mainColor))));
-  const handColor = isAlternate ? alternateSkin : (isMechaGold ? mechaGoldColor : (isAlien ? darkGray : (isFox ? subColor : skinColor)));
-  const ankleColor = isFox ? furryWhite : shinColor;
-  const headColor = isAlternate ? alternateSkin : (isMechaGold ? mechaGoldColor : (state.name === 'Ava' ? skinColor : (isAlien ? celesteBlue : (isFox ? subColor : mainColor))));
+  const torsoColor = isAlternate ? alternateSkin : (isMechaGold ? mechaGoldColor : (isAlien ? darkGray : (isFox ? mainColor : (isFemale ? mainColor : subColor))));
+  const pantsColor = isAlternate ? "#111" : (isMechaGold ? mechaGoldColor : (state.name === 'James' ? "#6b7280" : (isAlien ? darkGray : (isFox ? mainColor : (isFemale ? mainColor : mainColor)))));
+  const armColor = isAlternate ? alternateSkin : (isMechaGold ? mechaGoldColor : (isAlien ? darkGray : (isFox ? mainColor : mainColor)));
+  const shoulderColor = isAlternate ? alternateSkin : (isMechaGold ? mechaGoldColor : (isAlien ? darkGray : (isFox ? mainColor : (isFemale ? mainColor : subColor))));
+  const legColor = isAlternate ? alternateSkin : (isMechaGold ? mechaGoldColor : (state.name === 'James' ? "#6b7280" : (isAlien ? alienPurple : (isFox ? mainColor : mainColor))));
+  const feetColor = isAlternate ? "#111" : (isMechaGold ? mechaGoldColor : (state.name === 'James' ? "#6b7280" : (isAlien ? alienPurple : (isFemale ? mainColor : (isFox ? mainColor : "#111111")))));
+  const shinColor = isAlternate ? alternateSkin : (isMechaGold ? mechaGoldColor : (state.name === 'James' ? "#6b7280" : (isAlien ? alienPurple : (isFox ? mainColor : mainColor))));
+  const handColor = isAlternate ? alternateSkin : (isMechaGold ? mechaGoldColor : (isAlien ? darkGray : (isFox ? mainColor : skinColor)));
+  const ankleColor = isFox ? subColor : shinColor;
+  const headColor = isAlternate ? alternateSkin : (isMechaGold ? mechaGoldColor : (state.name === 'Ava' ? skinColor : (isAlien ? celesteBlue : (isFox ? mainColor : mainColor))));
   const jointColor = isMechaGold ? "#b8860b" : "#111";
 
   // Get the texture type
   const textureType = isMechaGold ? 'MECHA' : (isAlien ? 'ALIEN' : (isFemale ? 'SAKURA' : 'CLASSIC'));
 
-  // Create procedural textures matching each character
+  // Create procedural textures matching each character (Fox uses null to keep pure custom subColor/mainColor colors without washing out)
   const classicWhiteTexture = getProceduralTexture('CLASSIC', '#ffffff');
-  const torsoTexture = isFox ? classicWhiteTexture : getProceduralTexture(textureType, torsoColor);
-  const pantsTexture = isFox ? classicWhiteTexture : getProceduralTexture(textureType, pantsColor);
-  // Alien's arms specifically use MECHA grey texture
-  const armTexture = isFox ? classicWhiteTexture : getProceduralTexture(isAlien ? 'MECHA' : textureType, armColor);
-  const shoulderTexture = isFox ? classicWhiteTexture : getProceduralTexture(isAlien ? 'MECHA' : textureType, shoulderColor);
-  const legTexture = isFox ? classicWhiteTexture : getProceduralTexture(textureType, legColor);
-  const feetTextureObj = isFox ? classicWhiteTexture : getProceduralTexture(textureType, feetColor);
-  const shinTextureObj = isFox ? classicWhiteTexture : getProceduralTexture(textureType, shinColor);
-  const handTextureObj = isFox ? classicWhiteTexture : getProceduralTexture(isAlien ? 'MECHA' : textureType, handColor);
-  const ankleTexture = isFox ? classicWhiteTexture : getProceduralTexture(textureType, shinColor);
+  const torsoTexture = isFox ? null : getProceduralTexture(textureType, torsoColor);
+  const pantsTexture = isFox ? null : getProceduralTexture(textureType, pantsColor);
+  const armTexture = isFox ? null : getProceduralTexture(isAlien ? 'MECHA' : textureType, armColor);
+  const shoulderTexture = isFox ? null : getProceduralTexture(isAlien ? 'MECHA' : textureType, shoulderColor);
+  const legTexture = isFox ? null : getProceduralTexture(textureType, legColor);
+  const feetTextureObj = isFox ? null : getProceduralTexture(textureType, feetColor);
+  const shinTextureObj = isFox ? null : getProceduralTexture(textureType, shinColor);
+  const handTextureObj = isFox ? null : getProceduralTexture(isAlien ? 'MECHA' : textureType, handColor);
+  const ankleTexture = isFox ? null : getProceduralTexture(textureType, shinColor);
 
   const baseMaterial = { roughness: 0.85, metalness: 0.0 };
 
@@ -2842,31 +2841,31 @@ const BeltEquipmentMesh: React.FC<{ type?: string; color?: string; subColor?: st
                     {/* Segment 0 */}
                     <mesh position={[0, -0.09, 0]}>
                         <capsuleGeometry args={[0.13, 0.09, 8, 16]} />
-                        <meshStandardMaterial color={mainColor} map={texturesEnabled ? torsoTexture : null} roughness={0.7} />
+                        <meshStandardMaterial color={subColor} roughness={0.7} />
                     </mesh>
                     <group ref={tail1Ref} position={[0, -0.16, 0]}>
-                        {/* Segment 1: Wood grain, as requested */}
+                        {/* Segment 1 */}
                         <mesh position={[0, -0.09, 0]}>
                             <capsuleGeometry args={[0.155, 0.08, 8, 16]} />
-                            <meshStandardMaterial color={mainColor} map={texturesEnabled ? torsoTexture : null} roughness={0.7} />
+                            <meshStandardMaterial color={subColor} roughness={0.7} />
                         </mesh>
                         <group ref={tail2Ref} position={[0, -0.16, 0]}>
                             {/* Segment 2 */}
                             <mesh position={[0, -0.09, 0]}>
                                 <capsuleGeometry args={[0.16, 0.07, 8, 16]} />
-                                <meshStandardMaterial color={mainColor} map={texturesEnabled ? torsoTexture : null} roughness={0.7} />
+                                <meshStandardMaterial color={subColor} roughness={0.7} />
                             </mesh>
                             <group ref={tail3Ref} position={[0, -0.15, 0]}>
-                                {/* Segment 3 (White Part of Tail Tip) */}
+                                {/* Segment 3 */}
                                 <mesh position={[0, -0.08, 0]}>
                                     <capsuleGeometry args={[0.135, 0.08, 8, 16]} />
-                                    <meshStandardMaterial color={furryWhite} map={getProceduralTexture('CLASSIC', furryWhite)} roughness={0.7} />
+                                    <meshStandardMaterial color={subColor} roughness={0.7} />
                                 </mesh>
                                 <group ref={tail4Ref} position={[0, -0.14, 0]}>
-                                    {/* Segment 4 (White Tip) */}
+                                    {/* Segment 4 Tip */}
                                     <mesh position={[0, -0.07, 0]}>
                                         <capsuleGeometry args={[0.095, 0.07, 8, 16]} />
-                                        <meshStandardMaterial color={furryWhite} map={getProceduralTexture('CLASSIC', furryWhite)} roughness={0.7} />
+                                        <meshStandardMaterial color={subColor} roughness={0.7} />
                                     </mesh>
                                 </group>
                             </group>
@@ -2909,7 +2908,7 @@ const BeltEquipmentMesh: React.FC<{ type?: string; color?: string; subColor?: st
                            {/* Fluffy stomach fur: primary color fur */}
                            <mesh position={[0, 0.13, 0.05]} scale={[1.12, 1.05, 0.65]} rotation={[0, -state.direction * Math.PI / 2, 0]}>
                                <capsuleGeometry args={[0.12, 0.12, 8, 16]} />
-                               <meshStandardMaterial color={mainColor} roughness={0.9} />
+                               <meshStandardMaterial color={subColor} roughness={0.9} />
                            </mesh>
                       </>
                  )}
@@ -2944,7 +2943,7 @@ const BeltEquipmentMesh: React.FC<{ type?: string; color?: string; subColor?: st
                              {/* Fluffy neck collar fur: primary color fur */}
                              <mesh position={[0, 0.10, 0.05]} scale={[1.18, 1.05, 0.7]} rotation={[0, -state.direction * Math.PI / 2, 0]}>
                                  <capsuleGeometry args={[0.125, 0.14, 8, 16]} />
-                                 <meshStandardMaterial color={mainColor} roughness={0.9} />
+                                 <meshStandardMaterial color={subColor} roughness={0.9} />
                              </mesh>
                         </>
                     )}
@@ -2974,16 +2973,14 @@ const BeltEquipmentMesh: React.FC<{ type?: string; color?: string; subColor?: st
                         </mesh>
 
                         {isFox && (
-                            /* Lower Head Wood Fur - colored pure white as requested */
+                            /* Lower Head Fur */
                             <mesh position={[0, 0.07, 0.035]} scale={[1.01, 0.55, 1.01]}>
                                  <sphereGeometry args={[0.14, 24, 24]} />
-                                 <meshStandardMaterial color="#ffffff" roughness={0.8} />
+                                 <meshStandardMaterial color={subColor} roughness={0.8} />
                              </mesh>
                         )}
                         {isFox ? (
                             <>
-
-
                                 {/* Premium Eye design matching the user's reference exactly for Fox */}
                                 <group position={[0.055, 0.14, 0.145]}>
                                     <FighterEye isLeft={false} scale={1.25} irisColor="#ffcc00" skinColor={actualHeadColor} isChargingLaser={isChargingLaser} who={who} />
@@ -3001,10 +2998,10 @@ const BeltEquipmentMesh: React.FC<{ type?: string; color?: string; subColor?: st
                                     </mesh>
                                 </group>
 
-                                {/* Snout/Muzzle - white, as requested */}
+                                {/* Snout/Muzzle - primary color fur */}
                                 <mesh position={[0, 0.08, 0.13]} scale={[1.05, 0.8, 1.15]}>
                                     <sphereGeometry args={[0.06, 16, 16]} />
-                                    <meshStandardMaterial color="#ffffff" emissive="#ffffff" emissiveIntensity={0.15} roughness={0.7} />
+                                    <meshStandardMaterial color={subColor} emissive={subColor} emissiveIntensity={0.08} roughness={0.7} />
                                 </mesh>
                                 {/* Small Black Nose */}
                                 <mesh position={[0, 0.11, 0.19]}>
@@ -3016,25 +3013,25 @@ const BeltEquipmentMesh: React.FC<{ type?: string; color?: string; subColor?: st
                                     <meshStandardMaterial color="#330005" roughness={0.8} />
                                 </mesh>
 
-                                {/* Wobbling Ears with White Inside */}
+                                {/* Ears with primary color fur */}
                                 <group ref={rEarRef} position={[0.1, 0.24, 0]}>
                                     <mesh rotation={[0, 0, -0.3]}>
                                         <coneGeometry args={[0.05, 0.15, 16]} />
-                                        <meshStandardMaterial color={mainColor} roughness={0.9} />
+                                        <meshStandardMaterial color={subColor} roughness={0.9} />
                                     </mesh>
                                     <mesh position={[0, -0.01, 0.02]} rotation={[0, 0, -0.3]}>
                                         <coneGeometry args={[0.04, 0.12, 16]} />
-                                        <meshStandardMaterial color={furryWhite} roughness={0.9} />
+                                        <meshStandardMaterial color={subColor} roughness={0.9} />
                                     </mesh>
                                 </group>
                                 <group ref={lEarRef} position={[-0.1, 0.24, 0]}>
                                     <mesh rotation={[0, 0, 0.3]}>
                                         <coneGeometry args={[0.05, 0.15, 16]} />
-                                        <meshStandardMaterial color={mainColor} roughness={0.9} />
+                                        <meshStandardMaterial color={subColor} roughness={0.9} />
                                     </mesh>
                                     <mesh position={[0, -0.01, 0.02]} rotation={[0, 0, 0.3]}>
                                         <coneGeometry args={[0.04, 0.12, 16]} />
-                                        <meshStandardMaterial color={furryWhite} roughness={0.9} />
+                                        <meshStandardMaterial color={subColor} roughness={0.9} />
                                     </mesh>
                                 </group>
                             </>
@@ -3279,7 +3276,7 @@ const BeltEquipmentMesh: React.FC<{ type?: string; color?: string; subColor?: st
                         <group ref={rElbowRef} position={[0, -0.25, 0]}>
                              <mesh>
                                 <sphereGeometry args={[0.08, 16, 16]} />
-                                <meshStandardMaterial color={isFox ? subColor : armColor} map={isFox ? classicWhiteTexture : armTexture} {...baseMaterial} />
+                                <meshStandardMaterial color={isFox ? subColor : armColor} map={isFox ? null : armTexture} {...baseMaterial} />
                              </mesh>
                              {/* Deforming Joint Tube Union */}
                              <group ref={rElbowDeformRef} visible={false}>
@@ -3303,13 +3300,13 @@ const BeltEquipmentMesh: React.FC<{ type?: string; color?: string; subColor?: st
                                 <group position={[0, -0.03, 0]}>
                                     <mesh rotation={[Math.PI / 2, 0, 0]}>
                                         <torusGeometry args={[0.075, 0.015, 8, 16]} />
-                                        <meshStandardMaterial color={subColor} map={classicWhiteTexture} roughness={0.8} />
+                                        <meshStandardMaterial color={subColor} roughness={0.8} />
                                     </mesh>
                                 </group>
                              )}
                              <mesh position={[0, -0.125, 0]}>
                                 <capsuleGeometry args={[0.07, 0.11, 8, 16]} />
-                                <meshStandardMaterial color={isFox ? subColor : armColor} map={isFox ? classicWhiteTexture : armTexture} {...baseMaterial} />
+                                <meshStandardMaterial color={isFox ? subColor : armColor} map={isFox ? null : armTexture} {...baseMaterial} />
                              </mesh>
                              {/* Ruby Gauntlet & Refractive Forearm Shield with Orbiting Orbs */}
                              {isRubyGloves && <RubyForearmShield isLeft={false} />}
@@ -3317,7 +3314,7 @@ const BeltEquipmentMesh: React.FC<{ type?: string; color?: string; subColor?: st
                              <group position={[0, -0.21, 0]}>
                                  <mesh>
                                      <sphereGeometry args={[0.068, 12, 12]} />
-                                     <meshStandardMaterial color={isFox ? subColor : (isRubyGloves ? resolvedHandColor : armColor)} map={isFox ? classicWhiteTexture : armTexture} {...baseMaterial} />
+                                     <meshStandardMaterial color={isFox ? subColor : (isRubyGloves ? resolvedHandColor : armColor)} map={isFox ? null : armTexture} {...baseMaterial} />
                                  </mesh>
                                  <mesh rotation={[Math.PI / 2, 0, 0]}>
                                      <torusGeometry args={[0.068, 0.012, 8, 16]} />
@@ -3328,7 +3325,7 @@ const BeltEquipmentMesh: React.FC<{ type?: string; color?: string; subColor?: st
                                 isLeft={false}
                                 action={state.action}
                                 color={isIronJin ? ironJinRed : (isFox ? subColor : resolvedHandColor)}
-                                map={isMechaGold ? torsoTexture : (isFox ? classicWhiteTexture : (isFemale ? getProceduralTexture("SAKURA", mainColor) : undefined))}
+                                map={isMechaGold ? torsoTexture : (isFox ? null : (isFemale ? getProceduralTexture("SAKURA", mainColor) : undefined))}
                                 roughness={baseMaterial.roughness}
                                 metalness={baseMaterial.metalness}
                                 isRubyGloves={isRubyGloves}
@@ -3368,7 +3365,7 @@ const BeltEquipmentMesh: React.FC<{ type?: string; color?: string; subColor?: st
                         <group ref={lElbowRef} position={[0, -0.25, 0]}>
                              <mesh>
                                 <sphereGeometry args={[0.08, 16, 16]} />
-                                <meshStandardMaterial color={isFox ? subColor : armColor} map={isFox ? classicWhiteTexture : armTexture} {...baseMaterial} />
+                                <meshStandardMaterial color={isFox ? subColor : armColor} map={isFox ? null : armTexture} {...baseMaterial} />
                              </mesh>
                              {/* Deforming Joint Tube Union */}
                              <group ref={lElbowDeformRef} visible={false}>
@@ -3392,13 +3389,13 @@ const BeltEquipmentMesh: React.FC<{ type?: string; color?: string; subColor?: st
                                 <group position={[0, -0.03, 0]}>
                                     <mesh rotation={[Math.PI / 2, 0, 0]}>
                                         <torusGeometry args={[0.075, 0.015, 8, 16]} />
-                                        <meshStandardMaterial color={subColor} map={classicWhiteTexture} roughness={0.8} />
+                                        <meshStandardMaterial color={subColor} roughness={0.8} />
                                     </mesh>
                                 </group>
                              )}
                              <mesh position={[0, -0.125, 0]}>
                                 <capsuleGeometry args={[0.07, 0.11, 8, 16]} />
-                                <meshStandardMaterial color={isFox ? subColor : armColor} map={isFox ? classicWhiteTexture : armTexture} {...baseMaterial} />
+                                <meshStandardMaterial color={isFox ? subColor : armColor} map={isFox ? null : armTexture} {...baseMaterial} />
                              </mesh>
                              {/* Ruby Gauntlet & Refractive Forearm Shield with Orbiting Orbs */}
                              {isRubyGloves && <RubyForearmShield isLeft={true} />}
@@ -3406,7 +3403,7 @@ const BeltEquipmentMesh: React.FC<{ type?: string; color?: string; subColor?: st
                              <group position={[0, -0.21, 0]}>
                                  <mesh>
                                      <sphereGeometry args={[0.068, 12, 12]} />
-                                     <meshStandardMaterial color={isFox ? subColor : (isRubyGloves ? resolvedHandColor : armColor)} map={isFox ? classicWhiteTexture : armTexture} {...baseMaterial} />
+                                     <meshStandardMaterial color={isFox ? subColor : (isRubyGloves ? resolvedHandColor : armColor)} map={isFox ? null : armTexture} {...baseMaterial} />
                                  </mesh>
                                  <mesh rotation={[Math.PI / 2, 0, 0]}>
                                      <torusGeometry args={[0.068, 0.012, 8, 16]} />
@@ -3417,7 +3414,7 @@ const BeltEquipmentMesh: React.FC<{ type?: string; color?: string; subColor?: st
                                 isLeft={true}
                                 action={state.action}
                                 color={isIronJin ? ironJinRed : (isFox ? subColor : resolvedHandColor)}
-                                map={isMechaGold ? torsoTexture : (isFox ? classicWhiteTexture : (isFemale ? getProceduralTexture("SAKURA", mainColor) : undefined))}
+                                map={isMechaGold ? torsoTexture : (isFox ? null : (isFemale ? getProceduralTexture("SAKURA", mainColor) : undefined))}
                                 roughness={baseMaterial.roughness}
                                 metalness={baseMaterial.metalness}
                                 isRubyGloves={isRubyGloves}
@@ -3468,7 +3465,7 @@ const BeltEquipmentMesh: React.FC<{ type?: string; color?: string; subColor?: st
                          <sphereGeometry args={[0.10, 16, 16]} />
                          <meshStandardMaterial 
                              color={isFox ? subColor : (isAlien ? shinColor : legColor)} 
-                             map={isFox ? classicWhiteTexture : (isAlien ? shinTextureObj : legTexture)} 
+                             map={isFox ? null : (isAlien ? shinTextureObj : legTexture)} 
                              {...baseMaterial} 
                              roughness={isAlien ? 1.0 : (isFox ? 0.9 : baseMaterial.roughness)}
                              metalness={isAlien ? 0.0 : (isFox ? 0.0 : baseMaterial.metalness)}
@@ -3496,7 +3493,7 @@ const BeltEquipmentMesh: React.FC<{ type?: string; color?: string; subColor?: st
                         <capsuleGeometry args={[0.095, 0.16, 8, 16]} />
                         <meshStandardMaterial 
                             color={isFox ? subColor : (isAlien ? shinColor : legColor)} 
-                            map={isFox ? classicWhiteTexture : (isAlien ? shinTextureObj : legTexture)} 
+                            map={isFox ? null : (isAlien ? shinTextureObj : legTexture)} 
                             {...baseMaterial} 
                             roughness={isAlien ? 1.0 : baseMaterial.roughness}
                             metalness={isAlien ? 0.0 : baseMaterial.metalness}
@@ -3508,7 +3505,7 @@ const BeltEquipmentMesh: React.FC<{ type?: string; color?: string; subColor?: st
                         <sphereGeometry args={[0.075, 12, 12]} />
                         <meshStandardMaterial 
                             color={isFox ? subColor : (isAlien ? shinColor : legColor)} 
-                            map={isFox ? classicWhiteTexture : (isAlien ? shinTextureObj : legTexture)} 
+                            map={isFox ? null : (isAlien ? shinTextureObj : legTexture)} 
                             {...baseMaterial} 
                             roughness={isAlien ? 1.0 : baseMaterial.roughness}
                             metalness={isAlien ? 0.0 : baseMaterial.metalness}
@@ -3641,7 +3638,7 @@ const BeltEquipmentMesh: React.FC<{ type?: string; color?: string; subColor?: st
                          <sphereGeometry args={[0.10, 16, 16]} />
                          <meshStandardMaterial 
                              color={isFox ? subColor : (isAlien ? shinColor : legColor)} 
-                             map={isFox ? classicWhiteTexture : (isAlien ? shinTextureObj : legTexture)} 
+                             map={isFox ? null : (isAlien ? shinTextureObj : legTexture)} 
                              {...baseMaterial} 
                              roughness={isAlien ? 1.0 : (isFox ? 0.9 : baseMaterial.roughness)}
                              metalness={isAlien ? 0.0 : (isFox ? 0.0 : baseMaterial.metalness)}
@@ -3669,7 +3666,7 @@ const BeltEquipmentMesh: React.FC<{ type?: string; color?: string; subColor?: st
                         <capsuleGeometry args={[0.095, 0.16, 8, 16]} />
                         <meshStandardMaterial 
                             color={isFox ? subColor : (isAlien ? shinColor : legColor)} 
-                            map={isFox ? classicWhiteTexture : (isAlien ? shinTextureObj : legTexture)} 
+                            map={isFox ? null : (isAlien ? shinTextureObj : legTexture)} 
                             {...baseMaterial} 
                             roughness={isAlien ? 1.0 : baseMaterial.roughness}
                             metalness={isAlien ? 0.0 : baseMaterial.metalness}
@@ -3681,7 +3678,7 @@ const BeltEquipmentMesh: React.FC<{ type?: string; color?: string; subColor?: st
                         <sphereGeometry args={[0.075, 12, 12]} />
                         <meshStandardMaterial 
                             color={isFox ? subColor : (isAlien ? shinColor : legColor)} 
-                            map={isFox ? classicWhiteTexture : (isAlien ? shinTextureObj : legTexture)} 
+                            map={isFox ? null : (isAlien ? shinTextureObj : legTexture)} 
                             {...baseMaterial} 
                             roughness={isAlien ? 1.0 : baseMaterial.roughness}
                             metalness={isAlien ? 0.0 : baseMaterial.metalness}
